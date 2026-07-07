@@ -1,0 +1,6 @@
+.DS_Store
+package-lock.json
+node_modules/
+ui/dist/
+data/*.jsonl
+data/devices.json

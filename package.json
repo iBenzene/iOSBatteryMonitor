@@ -1,0 +1,42 @@
+{
+    "name": "ios-battery-monitor",
+    "version": "1.0.0",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "vite --host 127.0.0.1",
+        "build": "vite build",
+        "preview": "vite preview --host 127.0.0.1",
+        "server": "node main.js server",
+        "server:demo": "node main.js server --demo-data",
+        "once": "node main.js once",
+        "discover": "node main.js discover",
+        "format": "prettier --config .prettierrc.js --write .",
+        "format:check": "prettier --config .prettierrc.js --check .",
+        "lint": "ESLINT_USE_FLAT_CONFIG=true eslint --config .eslintrc.js \"*.js\" package.json \"ui/src/**/*.{js,vue}\" && stylelint --config .stylelintrc.js \"ui/src/**/*.{css,vue}\"",
+        "lint:css": "stylelint --config .stylelintrc.js \"ui/src/**/*.{css,vue}\"",
+        "lint:css:fix": "stylelint --config .stylelintrc.js \"ui/src/**/*.{css,vue}\" --fix",
+        "lint:fix": "ESLINT_USE_FLAT_CONFIG=true eslint --config .eslintrc.js \"*.js\" package.json \"ui/src/**/*.{js,vue}\" --fix && stylelint --config .stylelintrc.js \"ui/src/**/*.{css,vue}\" --fix",
+        "lint:js": "ESLINT_USE_FLAT_CONFIG=true eslint --config .eslintrc.js \"*.js\" package.json \"ui/src/**/*.{js,vue}\"",
+        "lint:js:fix": "ESLINT_USE_FLAT_CONFIG=true eslint --config .eslintrc.js \"*.js\" package.json \"ui/src/**/*.{js,vue}\" --fix"
+    },
+    "dependencies": {
+        "@vitejs/plugin-vue": "^6.0.1",
+        "vite": "^7.0.0",
+        "vue": "^3.5.39"
+    },
+    "devDependencies": {
+        "eslint": "^8.57.1",
+        "eslint-plugin-jsonc": "^2.18.2",
+        "eslint-plugin-sort-keys-fix": "^1.1.2",
+        "eslint-plugin-vue": "^9.33.0",
+        "jsonc-eslint-parser": "^2.4.0",
+        "lint-staged": "^15.2.11",
+        "postcss-html": "^1.8.0",
+        "prettier": "^3.7.4",
+        "stylelint": "^16.26.1",
+        "stylelint-config-standard": "^35.0.0",
+        "stylelint-order": "^7.0.0",
+        "vue-eslint-parser": "^10.2.0"
+    }
+}

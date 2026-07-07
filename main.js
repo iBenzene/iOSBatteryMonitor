@@ -874,7 +874,7 @@ const serveStatic = (request, response, pathname) => {
 const createServer = (monitor, store) =>
     http.createServer(async (request, response) => {
         try {
-            const parsed = new URL(request.url || "/", "http://127.0.0.1");
+            const parsed = new URL(request.url || "/", "http://0.0.0.0");
             const pathname = parsed.pathname || "/";
             const params = parsed.searchParams;
 
@@ -974,7 +974,7 @@ const parseArgs = argv => {
         command: "server",
         demoData: false,
         discoverInterval: 60,
-        host: "127.0.0.1",
+        host: "0.0.0.0",
         mode: "auto",
         open: true,
         port: 8765,
@@ -1076,6 +1076,21 @@ const runOnce = async args => {
     if (args.raw) console.log(`\n--- raw ---\n${result.raw}`);
 };
 
+const urlHost = host => {
+    if (host === "0.0.0.0" || host === "") return "127.0.0.1";
+    if (host === "::") return "[::1]";
+    if (host.includes(":") && !host.startsWith("[")) return `[${host}]`;
+    return host;
+};
+
+const serverUrl = (host, port) => `http://${urlHost(host)}:${port}`;
+
+const localNetworkUrls = port =>
+    Object.values(os.networkInterfaces())
+        .flat()
+        .filter(address => address && address.family === "IPv4" && !address.internal)
+        .map(address => serverUrl(address.address, port));
+
 const runServer = async args => {
     const store = new BatteryStore({ demoData: args.demoData });
     const monitor = new MonitorService(store, {
@@ -1088,8 +1103,12 @@ const runServer = async args => {
     monitor.start();
 
     server.listen(args.port, args.host, () => {
-        const url = `http://${args.host}:${args.port}`;
+        const url = serverUrl(args.host, args.port);
         console.log(`iOS Battery Monitor is running at ${url}`);
+        if (args.host === "0.0.0.0") {
+            const networkUrls = localNetworkUrls(args.port);
+            if (networkUrls.length) console.log(`LAN access: ${networkUrls.join(", ")}`);
+        }
         console.log(`Collect interval: ${args.collectInterval}s; discovery interval: ${args.discoverInterval}s`);
         console.log(`Battery log: ${BATTERY_LOG_PATH}`);
         if (args.demoData) console.log("Demo data: enabled (not written to data files)");
